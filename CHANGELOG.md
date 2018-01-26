@@ -1,3 +1,3 @@
 # CHANGELOG
 
-Changes in RKDownlinkModule 1.0.0
+Changes in RKDownlinkModule 2.0.0

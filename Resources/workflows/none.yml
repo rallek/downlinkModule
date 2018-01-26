@@ -1,4 +1,4 @@
-workflow:
+framework:
     workflows:
         rkdownlinkmodule_none:
             type: state_machine
@@ -16,45 +16,36 @@ workflow:
                 - trashed
                 - deleted
             transitions:
-                recoverdeferred:
-                    from: trashed
-                    to: deferred
                 defer:
                     from: initial
                     to: deferred
                 submit:
                     from: [initial, deferred]
                     to: approved
-                updateapproved:
+                unpublish:
+                    from: approved
+                    to: suspended
+                publish:
+                    from: suspended
+                    to: approved
+                update:
                     from: approved
                     to: approved
-                updatedeferred:
+                update:
                     from: deferred
                     to: deferred
-                updatesuspended:
+                update:
                     from: suspended
                     to: suspended
-                trashsuspended:
+                trash:
+                    from: deferred
+                    to: trashed
+                trash:
                     from: suspended
                     to: trashed
                 delete:
                     from: [deferred, approved, suspended, trashed]
                     to: deleted
-                recoverapproved:
-                    from: trashed
-                    to: approved
-                unpublish:
-                    from: approved
-                    to: suspended
-                recoversuspended:
-                    from: trashed
-                    to: suspended
-                publish:
-                    from: suspended
-                    to: approved
-                trashdeferred:
-                    from: deferred
-                    to: trashed
-                trashapproved:
+                trash:
                     from: approved
                     to: trashed

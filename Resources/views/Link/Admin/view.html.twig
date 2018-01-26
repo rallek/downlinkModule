@@ -34,7 +34,7 @@
                         <input type="checkbox" class="rkdownlink-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActionsStart" scope="col" class="z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hItemActionsStart" scope="col" class="unsorted z-w02">{{ __('Actions') }}</th>
                 {% if routeArea == 'admin' %}
                 <th id="hWorkflowState" scope="col" class="text-left">
                     <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
@@ -46,7 +46,7 @@
                 <th id="hMyLink" scope="col" class="text-center">
                     <a href="{{ sort.myLink.url }}" title="{{ __f('Sort by %s', {'%s': 'my link'}) }}" class="{{ sort.myLink.class }}">{{ __('My link') }}</a>
                 </th>
-                <th id="hMyDescription" scope="col" class="text-left z-order-unsorted">
+                <th id="hMyDescription" scope="col" class="text-left unsorted">
                     {{ __('My description') }}
                 </th>
             </tr>

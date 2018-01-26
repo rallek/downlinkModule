@@ -76,7 +76,7 @@ abstract class AbstractLinkEntity extends EntityAccess
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="255")
-     * @Assert\Url(checkDNS=true, dnsMessage = "The host '{{ value }}' could not be resolved.")
+     * @Assert\Url(checkDNS='ANY', dnsMessage = "The host '{{ value }}' could not be resolved.")
      * @var string $myLink
      */
     protected $myLink = '';

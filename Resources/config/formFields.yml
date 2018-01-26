@@ -5,5 +5,4 @@ services:
         class: RK\DownlinkModule\Form\Type\Field\MultiListType
         arguments:
             - "@rk_downlink_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']

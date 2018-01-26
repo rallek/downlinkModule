@@ -1,10 +1,10 @@
-application "Downlink" targets ZK15 {
+application "Downlink" targets ZK20 {
     documentation "A simple way to share some links. Categories are available"
     vendor "RK"
     author "Ralf Koester"
     email "ralf@familie-koester.de"
     url "http://k62.de"
-    version "1.0.0"
+    version "2.0.0"
     prefix "downli"
     generateModerationBlock false
     generateModerationPanel false
@@ -20,7 +20,7 @@ application "Downlink" targets ZK15 {
     separateAdminTemplates true
     generateTests false
     displayActionsStyle BUTTON_GROUP
-    skipFiles "README.md"
+    skipFiles "README.md,\r\n.gitignore"
     entities {
         entity "link" leading categorisable {
             nameMultiple "links"

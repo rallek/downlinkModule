@@ -1,6 +1,6 @@
 {
     "name": "rk/downlink-module",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "A simple way to share some links. Categories are available",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -30,7 +30,7 @@
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.5.4 <3.0",
+            "core-compatibility": ">=2.0.4 <3.0",
             "class": "RK\\DownlinkModule\\RKDownlinkModule",
             "displayname": "Downlink",
             "url": "downlink",

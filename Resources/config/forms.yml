@@ -7,8 +7,7 @@ services:
             - "@translator.default"
             - "@rk_downlink_module.listentries_helper"
             - "@rk_downlink_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     rk_downlink_module.form.handler.common:
         abstract: true
@@ -42,15 +41,13 @@ services:
             - "@rk_downlink_module.entity_factory"
             - "@rk_downlink_module.listentries_helper"
             - "@rk_downlink_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     rk_downlink_module.form.type.block.itemlist:
         class: RK\DownlinkModule\Block\Form\Type\ItemListBlockType
         arguments:
             - "@translator.default"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     rk_downlink_module.form.type.block.item:
         class: RK\DownlinkModule\Block\Form\Type\ItemBlockType
@@ -58,21 +55,18 @@ services:
             - "@translator.default"
             - "@rk_downlink_module.entity_factory"
             - "@rk_downlink_module.entity_display_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     rk_downlink_module.form.type.linkfinder:
         class: RK\DownlinkModule\Form\Type\Finder\LinkFinderType
         arguments:
             - "@translator.default"
             - "@rk_downlink_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     rk_downlink_module.form.type.config:
         class: RK\DownlinkModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
             - "@rk_downlink_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']

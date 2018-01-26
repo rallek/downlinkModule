@@ -9,5 +9,4 @@ services:
             - "@rk_downlink_module.workflow_helper"
             - "@rk_downlink_module.listentries_helper"
         public: false
-        tags:
-            - { name: twig.extension }
+        tags: ['twig.extension']
