@@ -1,5 +1,5 @@
 {# purpose of this template: links view filter form #}
-{% if hasPermission('RKDownlinkModule:Link:', '::', 'ACCESS_ADMIN') %}
+{% if hasPermission('RKDownlinkModule:Link:', '::', 'ACCESS_READ') %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
     ] %}
