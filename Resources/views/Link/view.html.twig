@@ -1,0 +1,158 @@
+{# purpose of this template: links user list view #}
+{% extends 'RKDownlinkModule::base.html.twig' %}
+{% block title own ? __('My links') : __('Links list') %}
+{% block content %}
+<div class="rkdownlinkmodule-link rkdownlinkmodule-view">
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@RKDownlinkModule/Link/viewQuickNav.html.twig') }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="linksViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover{% if routeArea == 'admin' %} table-condensed{% endif %}">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActionsStart" />
+                {% if routeArea == 'admin' %}
+                <col id="cWorkflowState" />
+                {% endif %}
+                <col id="cLinkTitle" />
+                <col id="cMyLink" />
+                <col id="cMyDescription" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="text-center z-w02">
+                        <input type="checkbox" class="rkdownlink-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActionsStart" scope="col" class="z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                {% if routeArea == 'admin' %}
+                <th id="hWorkflowState" scope="col" class="text-left">
+                    <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
+                </th>
+                {% endif %}
+                <th id="hLinkTitle" scope="col" class="text-left">
+                    <a href="{{ sort.linkTitle.url }}" title="{{ __f('Sort by %s', {'%s': 'link title'}) }}" class="{{ sort.linkTitle.class }}">{{ __('Link title') }}</a>
+                </th>
+                <th id="hMyLink" scope="col" class="text-center">
+                    <a href="{{ sort.myLink.url }}" title="{{ __f('Sort by %s', {'%s': 'my link'}) }}" class="{{ sort.myLink.class }}">{{ __('My link') }}</a>
+                </th>
+                <th id="hMyDescription" scope="col" class="text-left z-order-unsorted">
+                    {{ __('My description') }}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for link in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ link.getKey() }}" class="rkdownlink-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ link.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('RKDownlinkModule:ItemActionsMenu:menu', [], {entity: link, area: routeArea, context: 'view'}) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ link.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+                    </div>
+                </td>
+                {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
+                    {{ link.workflowState|rkdownlinkmodule_objectState }}
+                </td>
+                {% endif %}<td headers="hLinkTitle" class="text-left">
+                    {{ link.linkTitle }}
+                </td>
+                <td headers="hMyLink" class="text-center">
+                    <a href="{{ link.myLink }}" title="{{ __('Visit this page') }}"><i class="fa fa-external-link-square"></i></a>
+                </td>
+                <td headers="hMyDescription" class="text-left">
+                    {{ link.myDescription|striptags|truncate(50) }}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}6{% else %}5{% endif %}">
+            {{ __('No links found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if all != 1 and pager|default %}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'rkdownlinkmodule_link_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="rKDownlinkModuleAction" class="col-sm-3 control-label">{{ __('With selected links') }}</label>
+                <div class="col-sm-6">
+                    <select id="rKDownlinkModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="unpublish" title="{{ __('Hide content temporarily.') }}">{{ __('Unpublish') }}</option>
+                        <option value="publish" title="{{ __('Make content available again.') }}">{{ __('Publish') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('RKDownlinkModule:Link:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create link') %}
+                <a href="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
+        {% if all == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            {% set routeArgs = own ? {own: 1} : {} %}
+            <a href="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            {% set routeArgs = own ? {all: 1, own: 1} : {all: 1} %}
+            <a href="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+        {% endif %}
+        {% if own == 1 %}
+            {% set linkTitle = __('Show also entries from other users') %}
+            {% set routeArgs = all ? {all: 1} : {} %}
+            <a href="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-users"></i> {{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show only own entries') %}
+            {% set routeArgs = all ? {all: 1, own: 1} : {own: 1} %}
+            <a href="{{ path('rkdownlinkmodule_link_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-user"></i> {{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='rkdownlinkmodule.ui_hooks.links.display_view', urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif % #}
+{% endblock %}

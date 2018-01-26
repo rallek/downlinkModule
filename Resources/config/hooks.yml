@@ -1,0 +1,22 @@
+services:
+    rk_downlink_module.hook_subscriber.filter_hooks.links:
+        class: RK\DownlinkModule\HookSubscriber\LinkFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.rkdownlinkmodule.filter_hooks.links' }
+
+    rk_downlink_module.hook_subscriber.form_aware_hook.links:
+        class: RK\DownlinkModule\HookSubscriber\LinkFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.rkdownlinkmodule.form_aware_hook.links' }
+
+    rk_downlink_module.hook_subscriber.ui_hooks.links:
+        class: RK\DownlinkModule\HookSubscriber\LinkUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.rkdownlinkmodule.ui_hooks.links' }
+

@@ -1,0 +1,6 @@
+{# Purpose of this template: Display links within an external context #}
+{% for link in items %}
+    <h3>{{ link|rkdownlinkmodule_formattedTitle }}</h3>
+    <p><a href="{{ path('rkdownlinkmodule_link_display', {'id': link.getId()}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
+    </p>
+{% endfor %}

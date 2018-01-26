@@ -1,0 +1,56 @@
+application "Downlink" targets ZK15 {
+    documentation "A simple way to share some links. Categories are available"
+    vendor "RK"
+    author "Ralf Koester"
+    email "ralf@familie-koester.de"
+    url "http://k62.de"
+    version "1.0.0"
+    prefix "downli"
+    generateModerationBlock false
+    generateModerationPanel false
+    generatePendingContentSupport false
+    generateRssTemplates false
+    generateAtomTemplates false
+    generateCsvTemplates false
+    generateXmlTemplates false
+    generateJsonTemplates false
+    generateKmlTemplates false
+    generateIcsTemplates false
+    versionAllGeneratedFiles false
+    separateAdminTemplates true
+    generateTests false
+    displayActionsStyle BUTTON_GROUP
+    skipFiles "README.md"
+    entities {
+        entity "link" leading categorisable {
+            nameMultiple "links"
+            displayPattern "#linkTitle#"
+            hasArchive false
+            hasTray true
+            ownerPermission true
+            fields {
+                
+                 string "linkTitle",
+                url "myLink" checkDNS {
+                    documentation "Here type the link you want to share"
+                }
+            ,
+                
+
+                text "myDescription" nullable {
+                    documentation "the quantity of characters are limited to {{length}}"
+                    mandatory false
+                    displayType VIEW_DISPLAY
+                }
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit"
+            ,
+                deleteAction "Delete"
+            }
+        }
+    }
+    }

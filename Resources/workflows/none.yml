@@ -1,0 +1,60 @@
+workflow:
+    workflows:
+        rkdownlinkmodule_none:
+            type: state_machine
+            marking_store:
+                type: single_state
+                arguments:
+                    - workflowState
+            supports:
+                - RK\DownlinkModule\Entity\LinkEntity
+            places:
+                - initial
+                - deferred
+                - approved
+                - suspended
+                - trashed
+                - deleted
+            transitions:
+                recoverdeferred:
+                    from: trashed
+                    to: deferred
+                defer:
+                    from: initial
+                    to: deferred
+                submit:
+                    from: [initial, deferred]
+                    to: approved
+                updateapproved:
+                    from: approved
+                    to: approved
+                updatedeferred:
+                    from: deferred
+                    to: deferred
+                updatesuspended:
+                    from: suspended
+                    to: suspended
+                trashsuspended:
+                    from: suspended
+                    to: trashed
+                delete:
+                    from: [deferred, approved, suspended, trashed]
+                    to: deleted
+                recoverapproved:
+                    from: trashed
+                    to: approved
+                unpublish:
+                    from: approved
+                    to: suspended
+                recoversuspended:
+                    from: trashed
+                    to: suspended
+                publish:
+                    from: suspended
+                    to: approved
+                trashdeferred:
+                    from: deferred
+                    to: trashed
+                trashapproved:
+                    from: approved
+                    to: trashed

@@ -1,0 +1,58 @@
+{# purpose of this template: links admin display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'adminBase' %}
+{% extends 'RKDownlinkModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ link|rkdownlinkmodule_formattedTitle|default(__('Link')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = link|rkdownlinkmodule_formattedTitle|default(__('Link')) %}
+    {{ templateTitle|notifyFilters('rkdownlinkmodule.filter_hooks.links.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ link.workflowState|rkdownlinkmodule_objectState(false)|lower }})</small>{% endif %}
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="rkdownlinkmodule-link rkdownlinkmodule-display">
+
+    {% set itemActions = knp_menu_get('RKDownlinkModule:ItemActionsMenu:menu', [], {entity: link, area: routeArea, context: 'display'}) %}
+    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+    </div>
+    <dl>
+        {% if link.workflowState is not empty and routeArea == 'admin' %}
+            <dt>{{ __('State') }}</dt>
+            <dd>{{ link.workflowState|rkdownlinkmodule_listEntry('link', 'workflowState') }}</dd>
+        {% endif %}
+        {% if link.linkTitle is not empty %}
+            <dt>{{ __('Link title') }}</dt>
+            <dd>{{ link.linkTitle }}</dd>
+        {% endif %}
+        {% if link.myLink is not empty %}
+            <dt>{{ __('My link') }}</dt>
+            <dd>{% if not isQuickView %}
+            <a href="{{ link.myLink }}" title="{{ __('Visit this page') }}"><i class="fa fa-external-link-square"></i></a>
+            {% else %}
+                {{ link.myLink }}
+            {% endif %}
+            </dd>
+        {% endif %}
+        {% if link.myDescription is not empty %}
+            <dt>{{ __('My description') }}</dt>
+            <dd>{{ link.myDescription|safeHtml }}</dd>
+        {% endif %}
+        
+    </dl>
+
+    {% if featureActivationHelper.isEnabled(constant('RK\\DownlinkModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'link') %}
+        {{ include('@RKDownlinkModule/Helper/includeCategoriesDisplay.html.twig', {obj: link}) }}
+    {% endif %}
+    {{ include('@RKDownlinkModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: link}) }}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='rkdownlinkmodule.ui_hooks.links.display_view', id=link.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+    {% if hooks is iterable and hooks|length > 0 %}
+        {% for area, hook in hooks %}
+            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

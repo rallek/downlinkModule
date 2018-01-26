@@ -1,0 +1,86 @@
+services:
+    # Event subscribers and listeners
+    rk_downlink_module.entity_lifecycle_listener:
+        class: RK\DownlinkModule\Listener\EntityLifecycleListener
+        arguments:
+            - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
+        tags:
+            - { name: doctrine.event_subscriber }
+    
+    rk_downlink_module.kernel_listener:
+        class: RK\DownlinkModule\Listener\KernelListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.installer_listener:
+        class: RK\DownlinkModule\Listener\InstallerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.moduledispatch_listener:
+        class: RK\DownlinkModule\Listener\ModuleDispatchListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.mailer_listener:
+        class: RK\DownlinkModule\Listener\MailerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.theme_listener:
+        class: RK\DownlinkModule\Listener\ThemeListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.userlogin_listener:
+        class: RK\DownlinkModule\Listener\UserLoginListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.userlogout_listener:
+        class: RK\DownlinkModule\Listener\UserLogoutListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.user_listener:
+        class: RK\DownlinkModule\Listener\UserListener
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.entity_factory"
+            - "@zikula_users_module.current_user"
+            - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.userregistration_listener:
+        class: RK\DownlinkModule\Listener\UserRegistrationListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.users_listener:
+        class: RK\DownlinkModule\Listener\UsersListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.group_listener:
+        class: RK\DownlinkModule\Listener\GroupListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.thirdparty_listener:
+        class: RK\DownlinkModule\Listener\ThirdPartyListener
+        arguments:
+            - "@filesystem"
+            - "@request_stack"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_downlink_module.workflow_events_listener:
+        class: RK\DownlinkModule\Listener\WorkflowEventsListener
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+        tags:
+            - { name: kernel.event_subscriber }
+    

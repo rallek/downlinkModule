@@ -1,0 +1,78 @@
+services:
+    # Form types
+    
+    rk_downlink_module.form.type.linkquicknav:
+        class: RK\DownlinkModule\Form\Type\QuickNavigation\LinkQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.listentries_helper"
+            - "@rk_downlink_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_downlink_module.form.handler.common:
+        abstract: true
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@rk_downlink_module.entity_factory"
+            - "@rk_downlink_module.controller_helper"
+            - "@rk_downlink_module.model_helper"
+            - "@rk_downlink_module.workflow_helper"
+            - "@rk_downlink_module.hook_helper"
+            - "@rk_downlink_module.feature_activation_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+    
+    
+    rk_downlink_module.form.handler.link:
+        class: RK\DownlinkModule\Form\Handler\Link\EditHandler
+        parent: rk_downlink_module.form.handler.common
+    
+    rk_downlink_module.form.type.link:
+        class: RK\DownlinkModule\Form\Type\LinkType
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.entity_factory"
+            - "@rk_downlink_module.listentries_helper"
+            - "@rk_downlink_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_downlink_module.form.type.block.itemlist:
+        class: RK\DownlinkModule\Block\Form\Type\ItemListBlockType
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: form.type }
+    
+    rk_downlink_module.form.type.block.item:
+        class: RK\DownlinkModule\Block\Form\Type\ItemBlockType
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.entity_factory"
+            - "@rk_downlink_module.entity_display_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_downlink_module.form.type.linkfinder:
+        class: RK\DownlinkModule\Form\Type\Finder\LinkFinderType
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_downlink_module.form.type.config:
+        class: RK\DownlinkModule\Form\Type\ConfigType
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.listentries_helper"
+        tags:
+            - { name: form.type }

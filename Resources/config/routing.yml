@@ -1,0 +1,5 @@
+rkdownlinkmodule:
+    # define routing support for these controllers
+    resource: "@RKDownlinkModule/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

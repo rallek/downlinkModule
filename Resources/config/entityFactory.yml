@@ -1,0 +1,12 @@
+services:
+    # Entity factory
+    rk_downlink_module.entity_factory:
+        class: RK\DownlinkModule\Entity\Factory\EntityFactory
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@rk_downlink_module.entity_initialiser"
+            - "@rk_downlink_module.collection_filter_helper"
+    
+    # Entity initialiser
+    rk_downlink_module.entity_initialiser:
+        class: RK\DownlinkModule\Entity\Factory\EntityInitialiser

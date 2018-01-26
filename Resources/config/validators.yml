@@ -1,0 +1,9 @@
+services:
+    # Custom validators
+    rk_downlink_module.validator.list_entry.validator:
+        class: RK\DownlinkModule\Validator\Constraints\ListEntryValidator
+        arguments:
+            - "@translator.default"
+            - "@rk_downlink_module.listentries_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: rk_downlink_module.validator.list_entry.validator }
